@@ -7,8 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference dashAction;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float dashSpeed;
-    [SerializeField] private Rigidbody2D body;
-
+    private Rigidbody2D body;
     private Vector2 moveInput;
     private Vector2 dashInput;
     private bool willDash;
@@ -43,8 +42,6 @@ public class PlayerMovement : MonoBehaviour
     {
         moveAction.action.performed += OnMovePerformed;
         moveAction.action.canceled += OnMoveCanceled;
-
-
     }
 
     private void OnDisable()
