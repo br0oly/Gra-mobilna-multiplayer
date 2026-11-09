@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{15AFCAA0-3422-94D1-BC3E-A8698FD640D1}</ProjectGuid>
+    <ProjectGuid>{5186DF8D-F1A4-E36E-15F7-A0464E2D4FAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.2D.Welcome</AssemblyName>
