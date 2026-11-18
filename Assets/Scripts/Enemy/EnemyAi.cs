@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum EnemyState
@@ -22,7 +23,17 @@ public class EnemyAi : MonoBehaviour
     [Header("Target")]
     [SerializeField] private Transform player;
 
-    public event Action<int> OnEnemyAttackHit;
+    [Header("Lock")]
+    [SerializeField] private float attackLockDuration;
+
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private Vector2 attackRange = new Vector2(1, 1);
+
+    private SpriteRenderer spriteRenderer;
+    private bool attackLock;
+
+    public event Action<int> OnAttackHit;
 
     public EnemyState CurrentState { get; private set; }
         = EnemyState.Idle;
@@ -33,6 +44,8 @@ public class EnemyAi : MonoBehaviour
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         aggroRadiusSqr = aggroRadius * aggroRadius;
 
         attackRadiusSqr = attackRadius * attackRadius;
@@ -108,9 +121,9 @@ public class EnemyAi : MonoBehaviour
         Attack();
     }
 
-    private void LookAt()
+    private void LookAtPlayer()
     {
-        transform.LookAt(transform.position);
+        spriteRenderer.flipX = player.position.x > transform.position.x;
     }
 
     private void ChangeState(EnemyState newState)
@@ -122,24 +135,49 @@ public class EnemyAi : MonoBehaviour
 
     private void Chase()
     {
-        transform.LookAt(player.position);
+        LookAtPlayer();
 
         transform.position = Vector3.MoveTowards(transform.position, player.position,moveSpeed * Time.deltaTime);
     }
 
     private void Attack()
     {
-        if (isHit) 
+        if (attackLock) return;
+        if (CheckIsAttackInRange()) 
         {
-            OnEnemyAttackHit?.Invoke(damage);
+            Debug.Log("trafi³em");
+            OnAttackHit?.Invoke(damage);
+            attackLock = true;
+            StartCoroutine(AttackLock());
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private bool CheckIsAttackInRange()
     {
-        if (collision.gameObject.CompareTag("PlayerA") || collision.gameObject.CompareTag("PlayerB")) 
-        {
-            isHit = true;
-        }
+        return Physics2D.OverlapBox(
+            attackPoint.position,
+            attackRange,
+            0f,
+            playerLayer
+        ) != null;
+    }
+
+    IEnumerator AttackLock() 
+    {
+        yield return new WaitForSecondsRealtime(attackLockDuration);
+
+        attackLock = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (attackPoint == null) return;
+
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireCube(
+            attackPoint.position,
+            attackRange
+        );
     }
 }

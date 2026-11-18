@@ -7,18 +7,33 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth;
     [SerializeField] private int currentHealth;
 
+    private DamageReceived damage;
+
     public event Action<int, int> OnHealthChanged;
+    public event Action OnPlayerLiving;
+    public event Action OnPlayerDie;
     
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
+    private void OnEnable()
+    {
+        damage.OnDamageReceived += TakeDamage;
+    }
+
+    private void OnDisable()
+    {
+        damage.OnDamageReceived -= TakeDamage;
+    }
     private void Awake()
     {
+        damage = GetComponent<DamageReceived>();
         currentHealth = maxHealth;
     }
     private void Start()
     {
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        OnPlayerLiving?.Invoke();
     }
 
     private void TakeDamage(int amount)
@@ -36,6 +51,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        OnPlayerDie?.Invoke();
     }
 }
