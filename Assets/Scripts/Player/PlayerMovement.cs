@@ -13,13 +13,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float dashForce;
+    [SerializeField] private float dashDuration;
 
-    [Header("JumpLock")]
-    [SerializeField] private float jumpLockDuration = 4f;
-
-    [Header("DashLock")]
-    [SerializeField] private float dashLockDuration = 2f;
-    [SerializeField] private float dashDuration = 2f;
+    [Header("Lock")]
+    [SerializeField] private float jumpLockDuration;
+    [SerializeField] private float dashLockDuration;
+    [SerializeField] private float moveLockDuration;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -28,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerDeath death;
     private Rigidbody2D body;
+    private PushBack back;
 
     private Vector2 moveInput;
     private Vector2 dashDirection;
@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;
     private bool canDash = true;
     private bool deathState = false;
+    private bool moveLock;
 
     private void OnEnable()
     {
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         moveAction.action.canceled += MoveCanceled;
 
         death.OnPlayerDeath += DeathState;
+        back.OnPushBack += CantMove;
     }
 
     private void OnDisable()
@@ -52,16 +54,19 @@ public class PlayerMovement : MonoBehaviour
         moveAction.action.canceled -= MoveCanceled;
 
         death.OnPlayerDeath -= DeathState;
+        back.OnPushBack -= CantMove;
     }
     void Awake()
     {
         death = GetComponent<PlayerDeath>();
         body = GetComponent<Rigidbody2D>();
+        back = GetComponent<PushBack>();
     }
 
     void Update()
     {
         if (deathState) return;
+        if (moveLock) return;
         Flip();
 
         if (jumpAction.action.WasPressedThisFrame() && !jumpLockActive)
@@ -136,6 +141,22 @@ public class PlayerMovement : MonoBehaviour
         moveInput = Vector2.zero;
     }
 
+    private void CantMove() 
+    {
+        moveLock = true;
+        StartCoroutine(MoveLocked());
+    }
+
+    private void DeathState()
+    {
+        deathState = true;
+    }
+
+    IEnumerator MoveLocked() 
+    {
+        yield return new WaitForSecondsRealtime(moveLockDuration);
+        moveLock = false;
+    }
     IEnumerator Dash()
     {
         canDash = false;
@@ -160,10 +181,5 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSecondsRealtime(jumpLockDuration);
 
         jumpLockActive = false;
-    }
-
-    private void DeathState() 
-    {
-        deathState = true;
     }
 }

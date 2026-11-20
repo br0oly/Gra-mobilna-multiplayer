@@ -7,19 +7,18 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int maxHealth;
     [SerializeField] private int currentHealth;
 
-    [SerializeField] private DamageReceived damage;
+    [SerializeField] private EnemyDamageReceived damage;
 
-    public event Action<int, int> OnHealthChanged;
     public event Action OnEnemyDie;
 
     private void OnEnable()
     {
-        damage.OnDamageReceived += TakeDamage;
+        damage.OnEnemyDamageReceived += TakeDamage;
     }
 
     private void OnDisable()
     {
-        damage.OnDamageReceived -= TakeDamage;
+        damage.OnEnemyDamageReceived -= TakeDamage;
     }
     private void Awake()
     {

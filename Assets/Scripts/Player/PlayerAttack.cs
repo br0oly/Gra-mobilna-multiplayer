@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Vector2 attackRange = new Vector2(1, 1);
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     [Header("Attack Lock")]
     [SerializeField] private float attackLock = 2f;
@@ -26,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     private bool isLockActive = false;
 
     public event Action<int> OnAttackHit;
+    public event Action<int> OnHitEnemy;
     private void Awake()
     {
         death = GetComponent<PlayerDeath>();
@@ -56,10 +58,16 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack() 
     {
-        if (CheckIsAttackInRange())
+        if (CheckIsPlayerAttackInRange())
         {
             Debug.Log("trafi³em");
             OnAttackHit?.Invoke(attackDamage);
+            StartCoroutine(AttackCooldown());
+        }
+        else if (CheckIsEnemyAttackInRange())
+        {
+            Debug.Log("trafi³em");
+            OnHitEnemy?.Invoke(attackDamage);
             StartCoroutine(AttackCooldown());
         }
         else
@@ -68,16 +76,27 @@ public class PlayerAttack : MonoBehaviour
             StartCoroutine(AttackCooldown());
         }
     }
+    
+    private bool CheckIsPlayerAttackInRange() 
+    {
+       return Physics2D.OverlapBox(
+       attackPoint.position, 
+        attackRange,
+        0f,
+        playerLayer
+       ) != null;
+    }
 
-    private bool CheckIsAttackInRange() 
+    private bool CheckIsEnemyAttackInRange()
     {
         return Physics2D.OverlapBox(
-            attackPoint.position, 
-            attackRange,
-            0f,
-            enemyLayer
+        attackPoint.position,
+         attackRange,
+         0f,
+         enemyLayer
         ) != null;
     }
+
     private void OnDrawGizmos()
     {
         if (attackPoint == null) return;
