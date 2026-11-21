@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -25,6 +26,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField, Min(0.01f)] private float groundCheckRadius = 0.2f;
 
+    [SerializeField] bool useNetworkOwnership;
+    private NetworkObject networkObject;
+
+    bool CanControl =>
+        !useNetworkOwnership ||
+        (networkObject != null && networkObject.IsSpawned && networkObject.IsOwner);
+    
     private PlayerDeath death;
     private Rigidbody2D body;
     private PushBack back;
