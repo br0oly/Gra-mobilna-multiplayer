@@ -27,7 +27,7 @@ public class PushBack : MonoBehaviour
 
     private void HandlePushBack() 
     {
-        body.AddForce(Vector2.left * backForce, ForceMode2D.Impulse);
+        body.AddForce(Vector2.one * backForce, ForceMode2D.Impulse);
         OnPushBack?.Invoke();
     }
 }

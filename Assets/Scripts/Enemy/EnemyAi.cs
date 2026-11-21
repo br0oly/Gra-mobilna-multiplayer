@@ -33,7 +33,7 @@ public class EnemyAi : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool attackLock;
 
-    public event Action<int> OnAttackHit;
+    public event Action<int> OnEnemyAttack;
 
     public EnemyState CurrentState { get; private set; }
         = EnemyState.Idle;
@@ -137,7 +137,7 @@ public class EnemyAi : MonoBehaviour
     {
         LookAtPlayer();
 
-        transform.position = Vector3.MoveTowards(transform.position, player.position,moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, player.position,moveSpeed * Time.deltaTime);
     }
 
     private void Attack()
@@ -146,7 +146,7 @@ public class EnemyAi : MonoBehaviour
         if (CheckIsAttackInRange()) 
         {
             Debug.Log("trafi³em");
-            OnAttackHit?.Invoke(damage);
+            OnEnemyAttack?.Invoke(damage);
             attackLock = true;
             StartCoroutine(AttackLock());
         }

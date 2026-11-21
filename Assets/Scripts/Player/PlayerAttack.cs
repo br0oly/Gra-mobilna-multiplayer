@@ -27,7 +27,6 @@ public class PlayerAttack : MonoBehaviour
     private bool isLockActive = false;
 
     public event Action<int> OnAttackHit;
-    public event Action<int> OnHitEnemy;
     private void Awake()
     {
         death = GetComponent<PlayerDeath>();
@@ -64,12 +63,6 @@ public class PlayerAttack : MonoBehaviour
             OnAttackHit?.Invoke(attackDamage);
             StartCoroutine(AttackCooldown());
         }
-        else if (CheckIsEnemyAttackInRange())
-        {
-            Debug.Log("trafi³em");
-            OnHitEnemy?.Invoke(attackDamage);
-            StartCoroutine(AttackCooldown());
-        }
         else
         {
             Debug.Log("chybi³em");
@@ -85,16 +78,6 @@ public class PlayerAttack : MonoBehaviour
         0f,
         playerLayer
        ) != null;
-    }
-
-    private bool CheckIsEnemyAttackInRange()
-    {
-        return Physics2D.OverlapBox(
-        attackPoint.position,
-         attackRange,
-         0f,
-         enemyLayer
-        ) != null;
     }
 
     private void OnDrawGizmos()
