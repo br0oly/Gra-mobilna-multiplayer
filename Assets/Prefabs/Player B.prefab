@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4667792433415519663}
   - component: {fileID: 1630464139731712985}
   - component: {fileID: 7036426255929372792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CinemachineCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
     BindingMode: 3
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 1, y: 1, z: 21.52}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3334946525832432819}
   - component: {fileID: 3929763135376062900}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 2470135822599302803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.457, y: 0.011, z: 0}
+  m_LocalPosition: {x: 0.294, y: 0.011, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -174,7 +174,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.068752214, g: 0.39446107, b: 0.9716981, a: 1}
@@ -201,7 +201,11 @@ GameObject:
   - component: {fileID: 4278114417814698029}
   - component: {fileID: 947855703025844645}
   - component: {fileID: 2445106772762449063}
-  m_Layer: 0
+  - component: {fileID: 8799154180382370833}
+  - component: {fileID: 7098297228234724231}
+  - component: {fileID: 7067054116293764401}
+  - component: {fileID: 5866564386915321531}
+  m_Layer: 8
   m_Name: Player B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -381,15 +385,80 @@ MonoBehaviour:
   dashAction: {fileID: 4002987456699771532, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 5
   jumpForce: 20
-  dashForce: 14
+  dashForce: 12
+  dashDuration: 2
   jumpLockDuration: 4
   dashLockDuration: 2
-  dashDuration: 2
+  moveLockDuration: 0
   groundCheck: {fileID: 6814794414791397206}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheckRadius: 0.2
+--- !u!114 &8799154180382370833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496420709218587597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92c10f7ab517d504489208fd10694c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  attackAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  attackPoint: {fileID: 8402785750382013887}
+  attackRange: {x: 1, y: 1}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  attackLock: 2
+  attackDamage: 25
+--- !u!114 &7098297228234724231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496420709218587597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c43577316870f142bdc4eb79fbdb0ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeath
+--- !u!114 &7067054116293764401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496420709218587597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fe1591362c6cc4fa02171e63bbffd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageReceived
+  armor: 5
+  damageCooldown: 3
+  damage: {fileID: 0}
+  enemy: {fileID: 0}
+--- !u!114 &5866564386915321531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496420709218587597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdbbfb1e4e2d9eb40afeefce4a125437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PushBack
+  backForce: 10
 --- !u!1 &6432506935646374581
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6814794414791397206}
   - component: {fileID: 655705270434684428}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -477,11 +546,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8402785750382013887}
-  - component: {fileID: 4923023960340557556}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackRange
   m_TagString: Untagged
-  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -494,55 +562,9 @@ Transform:
   m_GameObject: {fileID: 8021641137452459294}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.98200035, y: 0.009000063, z: 0}
+  m_LocalPosition: {x: 1.007, y: 0.009000063, z: 0}
   m_LocalScale: {x: 1.025, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1186386721700999388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4923023960340557556
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8021641137452459294}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.8}
-  m_EdgeRadius: 0
