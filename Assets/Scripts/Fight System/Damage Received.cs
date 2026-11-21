@@ -7,6 +7,7 @@ public class DamageReceived : MonoBehaviour
     [SerializeField] private int armor = 5;
     [SerializeField] private float damageCooldown;
     [SerializeField] private PlayerAttack damage;
+    [SerializeField] private EnemyAi enemy;
 
     private bool isAttackHit = false;
     private int finalDamage;
@@ -16,11 +17,13 @@ public class DamageReceived : MonoBehaviour
     private void OnEnable()
     {
         damage.OnAttackHit += HandleDamageReceived;
+        enemy.OnEnemyAttack += HandleDamageReceived;
     }
 
     private void OnDisable()
     {
         damage.OnAttackHit -= HandleDamageReceived;
+        enemy.OnEnemyAttack -= HandleDamageReceived;
     }
 
     private void HandleDamageReceived(int amount) 

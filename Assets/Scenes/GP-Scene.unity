@@ -604,6 +604,7 @@ MonoBehaviour:
   armor: 5
   damageCooldown: 3
   damage: {fileID: 8353528214944162090}
+  enemy: {fileID: 2008206712}
 --- !u!114 &255324558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1748,7 +1749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad4d6ba038395640a66a71c2f38c0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageReceived
-  damageCooldown: 0
+  damageCooldown: 2
   damage: {fileID: 8353528214944162090}
 --- !u!1 &2139889895
 GameObject:
@@ -2017,6 +2018,7 @@ MonoBehaviour:
   armor: 5
   damageCooldown: 3
   damage: {fileID: 255324550}
+  enemy: {fileID: 2008206712}
 --- !u!114 &8353528214944162102
 MonoBehaviour:
   m_ObjectHideFlags: 0
