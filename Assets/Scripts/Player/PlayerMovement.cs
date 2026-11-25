@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField, Min(0.01f)] private float groundCheckRadius = 0.2f;
 
+    [SerializeField] private BattleManager startBattle;
+
     private PlayerDeath death;
     private Rigidbody2D body;
     private PushBack back;
@@ -38,14 +40,16 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash = true;
     private bool deathState = false;
     private bool moveLock;
+    private bool lockMove = true;
 
     private void OnEnable()
     {
         moveAction.action.performed += MovePreformed;
         moveAction.action.canceled += MoveCanceled;
 
+        startBattle.OnFightStart += UnLockMove;
         death.OnPlayerDeath += DeathState;
-        back.OnPushBack += CantMove;
+        back.OnPushBack += CanMove;
     }
 
     private void OnDisable()
@@ -53,8 +57,9 @@ public class PlayerMovement : MonoBehaviour
         moveAction.action.performed -= MovePreformed;
         moveAction.action.canceled -= MoveCanceled;
 
+        startBattle.OnFightStart -= UnLockMove;
         death.OnPlayerDeath -= DeathState;
-        back.OnPushBack -= CantMove;
+        back.OnPushBack -= CanMove;
     }
     void Awake()
     {
@@ -65,8 +70,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (deathState) return;
-        if (moveLock) return;
+        if (lockMove || moveLock || deathState) return;
+
         Flip();
 
         if (jumpAction.action.WasPressedThisFrame() && !jumpLockActive)
@@ -95,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDashing) return;
+        if (isDashing || deathState || lockMove || moveLock) return;
         
         body.linearVelocity = new Vector2(moveInput.x * moveSpeed, body.linearVelocity.y);
 
@@ -141,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         moveInput = Vector2.zero;
     }
 
-    private void CantMove() 
+    private void CanMove() 
     {
         moveLock = true;
         StartCoroutine(MoveLocked());
@@ -152,6 +157,10 @@ public class PlayerMovement : MonoBehaviour
         deathState = true;
     }
 
+    private void UnLockMove() 
+    {
+        lockMove = false;
+    }
     IEnumerator MoveLocked() 
     {
         yield return new WaitForSecondsRealtime(moveLockDuration);

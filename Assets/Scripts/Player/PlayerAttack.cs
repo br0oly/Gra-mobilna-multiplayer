@@ -12,7 +12,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Vector2 attackRange = new Vector2(1, 1);
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private LayerMask playerLayer;
 
     [Header("Attack Lock")]
     [SerializeField] private float attackLock = 2f;
@@ -76,7 +75,7 @@ public class PlayerAttack : MonoBehaviour
        attackPoint.position, 
         attackRange,
         0f,
-        playerLayer
+        enemyLayer
        ) != null;
     }
 
